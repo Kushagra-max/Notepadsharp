@@ -1,3 +1,5 @@
-# Notepadsharp
-A text editor in python
-Check if pyside6 is installed before running, that is all.
+If you are a normal user, just download the zip from the releases
+If you wanna build it yourself, run the following commands
+pip install pyside6
+pip install pillow
+PyInstaller main.py --noconsole --icon=icon/icon.ico --onefile
