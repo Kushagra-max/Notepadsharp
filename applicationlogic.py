@@ -1,5 +1,7 @@
 from PySide6.QtGui import QAction, QClipboard
-from PySide6.QtWidgets import QApplication, QMessageBox
+from PySide6.QtWidgets import QApplication, QMessageBox, QMainWindow
+import sys
+import subprocess
 
 
 class ApplicationLogic:
@@ -37,3 +39,19 @@ class ApplicationLogic:
         text_to_copy = self.main_window.textedit.toPlainText()
         clipboard = QApplication.clipboard()
         clipboard.setText(text_to_copy)
+
+    def open_console(self):
+    # Check if the system is Windows
+        if sys.platform.startswith('win'):
+            subprocess.Popen('cmd', shell=True)
+    # Check if the system is Linux or macOS
+        elif sys.platform.startswith('linux') or sys.platform.startswith('darwin'):
+            subprocess.Popen(['open', '-a', 'Terminal'], shell=False)
+        else:
+            print("Unsupported platform")
+
+    # Paste Text
+    def paste_text(self):
+        clipboard = QApplication.clipboard()
+        text_to_paste = clipboard.text()
+        self.main_window.textedit.insertPlainText(text_to_paste)

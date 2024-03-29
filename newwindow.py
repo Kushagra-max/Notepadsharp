@@ -1,10 +1,9 @@
 from PySide6.QtWidgets import QMainWindow, QTextEdit, QVBoxLayout, QWidget, QFileDialog, QApplication
 from applicationlogic import ApplicationLogic
 from PySide6.QtGui import QAction, QKeySequence, QShortcut, QFont
-from newwindow import NewWindow
 
 
-class MainWindow(QMainWindow):
+class NewWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Notepad#")
