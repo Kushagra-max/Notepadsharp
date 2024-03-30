@@ -1,24 +1,28 @@
-from PySide6.QtWidgets import QMainWindow, QTextEdit, QVBoxLayout, QWidget, QFileDialog, QApplication
+from PySide6.QtWidgets import QMainWindow, QTextEdit, QVBoxLayout, QWidget, QFileDialog, QApplication, QLabel
 from applicationlogic import ApplicationLogic
-from PySide6.QtGui import QAction, QKeySequence, QShortcut, QFont
+from applicationlogic import file_path
+from PySide6.QtGui import QAction, QKeySequence, QShortcut, QFont, QFontDatabase
 
 
 class NewWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Notepad#")
+        self.setStyleSheet("background-color:#282c34;")
         self.textedit = QTextEdit()
         self.setCentralWidget(self.textedit)
-
+        self.setWindowTitle("Notepad#")
         self.logic = ApplicationLogic(self)
-
         self.create_menu_bar()
         self.create_shortcuts()
-        font = QFont("Arial", 16)
+
+        font = QFont("Source Code Pro for Powerline", 16)
         self.textedit.setFont(font)
+
+
 
     def create_menu_bar(self):
         menubar = self.menuBar()
+        menubar.setStyleSheet("background-color:white;")
 
         # File menu
         file_menu = menubar.addMenu("File")
@@ -67,6 +71,8 @@ class NewWindow(QMainWindow):
         openwindow.triggered.connect(self.open_window)
         window_menu.addAction(openwindow)
 
+        # Settings 
+        settings = QAction("Settings", self)
     def open_window(self):
         newwindow = NewWindow()
         newwindow.show()
