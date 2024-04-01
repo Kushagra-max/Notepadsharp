@@ -1,15 +1,20 @@
-from PySide6.QtWidgets import QMainWindow, QTextEdit, QVBoxLayout, QWidget, QFileDialog, QApplication, QLabel
+from PySide6.QtWidgets import QMainWindow, QTextEdit, QVBoxLayout, QWidget, QFileDialog, QApplication, QLabel, QFrame, QHBoxLayout, QPlainTextEdit
 from applicationlogic import ApplicationLogic
 from applicationlogic import file_path
-from PySide6.QtGui import QAction, QKeySequence, QShortcut, QFont, QFontDatabase
+from PySide6.QtGui import QAction, QKeySequence, QShortcut, QFont, QFontDatabase, QPainter, QColor, QTextFormat
 from newwindow import NewWindow
+from PySide6.QtCore import Qt, QSize, QRect
+from linenumber import LineNumberArea
+from codeditor import CodeEditor
+from syntaxhighlighter import PythonSyntaxHighlighter
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setStyleSheet("background-color:#282c34;")
-        self.textedit = QTextEdit()
+
+        self.textedit = CodeEditor()
         self.setCentralWidget(self.textedit)
         self.setWindowTitle("Notepad#")
         self.logic = ApplicationLogic(self)
@@ -18,8 +23,8 @@ class MainWindow(QMainWindow):
 
         font = QFont("Source Code Pro for Powerline", 16)
         self.textedit.setFont(font)
-
-
+        self.textedit.setStyleSheet("color: white;")
+        self.highlighter = PythonSyntaxHighlighter(self.textedit.document())
 
     def create_menu_bar(self):
         menubar = self.menuBar()
@@ -64,6 +69,11 @@ class MainWindow(QMainWindow):
         openconsole.triggered.connect(self.logic.open_console)
         tools_menu.addAction(openconsole)
 
+        # Convert docx to html action
+        parser = QAction("Parse Docx as HTML", self)
+        parser.triggered.connect(self.logic.parser)
+        tools_menu.addAction(parser)
+
         # Window menu
         window_menu = menubar.addMenu("Window")
 
@@ -72,12 +82,12 @@ class MainWindow(QMainWindow):
         openwindow.triggered.connect(self.open_window)
         window_menu.addAction(openwindow)
 
-        # Settings 
+        # Settings
         settings = QAction("Settings", self)
+
     def open_window(self):
         newwindow = NewWindow()
         newwindow.show()
-
 
     def create_shortcuts(self):
         # Create shortcuts for actions
@@ -92,3 +102,12 @@ class MainWindow(QMainWindow):
 
         shortcut_copy = QShortcut(QKeySequence("Ctrl+C"), self)
         shortcut_copy.activated.connect(self.logic.copy_file)
+
+
+if __name__ == "__main__":
+    import sys
+
+    app = QApplication(sys.argv)
+    window = MainWindow()
+    window.show()
+    sys.exit(app.exec())

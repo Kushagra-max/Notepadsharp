@@ -2,6 +2,8 @@ from PySide6.QtGui import QAction, QClipboard
 from PySide6.QtWidgets import QApplication, QMessageBox, QMainWindow, QFileDialog
 import sys
 import subprocess
+import pypandoc
+
 file_path = "none"
 
 class ApplicationLogic:
@@ -16,6 +18,19 @@ class ApplicationLogic:
         returnValue = msg.exec()
         if returnValue == QMessageBox.Ok:
             self.new_file()
+    def parser(self):
+        file_type = "Microsoft Word Files (*.docx);;"
+        file_dialog = QFileDialog(self.main_window)
+        file_path, _ = file_dialog.getOpenFileName(self.main_window, "Open File", "", file_type)
+        if file_path:
+            # Parse the file using pypandoc
+            output_filename = file_path[:-5] + ".html"  # Change the file extension to .html
+            pypandoc.convert_file(file_path, 'html', outputfile=output_filename)
+            with open(output_filename, "r") as file:
+                self.main_window.textedit.setPlainText(file.read())
+                self.main_window.setWindowTitle(f"Notepad# - {output_filename}")
+
+
 
 
 

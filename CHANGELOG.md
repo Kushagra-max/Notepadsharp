@@ -1,5 +1,8 @@
-Copy and Paste Actions implemented
-Open Console Implemented
-Shortcuts Implemented
-Added New window option
-Fixed false positive for virus
+Beta v1
+2nd MEGAUPDATE:
+Features:
+Inbuilt HTML to docx parser
+Improved UI
+Syntax Highlighting
+Numbers on left of each line
+Bugfixes
